@@ -43,9 +43,9 @@ def dictHelper1(name): #given a key, returns specific value in the dictionary an
     hdict.update({name + "EmptyRow": temp + 1})
     return temp
 
-def charstoString(array) :
-    print(b[2]) # debug prints out name of user
-    time.sleep(3) #we are limited by google api call limits, so we have to sleep here. may need to be adjusted depending on responses. 5 seconds works for 92 responses, 7ish games.
+def charstoString(array,time1,temp) :
+    print(b[temp]) # debug prints out name of user
+    time.sleep(time1) #we are limited by google api call limits, so we have to sleep here. may need to be adjusted depending on responses. 5 seconds works for 92 responses, 7ish games.
     gameLength = len(array) # takes the length of all games selected to turn into a string later on
     new = ""
     counter = 0
@@ -66,24 +66,27 @@ def charstoString(array) :
 
 hdict =	{}
 
-gc = pygsheets.authorize(service_file='/Users/newlocation') #authorization. Need to keys to usse google api. Contact me or google if you need help
+gc = pygsheets.authorize(service_file='/Users/inserthere') #authorization. Need to keys to usse google api. Contact me or google if you need help
 sh = gc.open(input('Enter sheet name. Case Sensitve. Read Usage for more: ')) #open the google spreadsheet. Make sure to share sheet with service account and replace name when necessary
 
 wks = sh[0] #select the first sheet
 wks.refresh() #refreshes sheet to make sure up todate 
 wks.link() #links sheet to the cloud for instant changes
-filterIndex = ord(input('Enter column letter to filter by. Case does not matter: ').lower()) - 96 #Column number of data that we are filtering by. IE if sorting people by favorite colors and user entered color into column a. filterIndex = 1
+filterIndex = ord(input('Enter column letter to filter by. Case does not matter: ').lower()) - 97 #Column number of data that we are filtering by. IE if sorting people by favorite colors and user entered color into column a. filterIndex = 1
 userIndex = int(input('Enter row number of when data starts. Most Likley 2: ')) #Starting Row Number. Usally 2 since row 1 will be questions.
+placeholder = returnCellValue(1000,1) #tempoary cell. crucial that this cellis emptty
+superCounter = 1 #counter to see how many users we have added
+temp = ord(input('Enter column letter print information. Case does not matter: ').lower()) - 97
+time1 = int(input('Enter sleep delay. 3 seconds for 100 items: '))
+
 start_time = time.time() #starts timer to see how long program goes
 print("starting")
 
-placeholder = returnCellValue(1000,1) #tempoary cell. crucial that this cellis emptty
-superCounter = 1 #counter to see how many users we have added
 while (placeholder != returnCellValue(userIndex,1)):
     #print(superCounter) # DEBUG Print
     b = returnRow(userIndex) #contains all user data ie timestamp to last one
     gameList = (b[filterIndex]) #takes the games portion of user data
-    charstoString(gameList) #main driver of program
+    charstoString(gameList,time1,temp) #main driver of program
     userIndex+=1 #update information and move to next person
     superCounter+=1 
 print(superCounter) # DEBUG Print
