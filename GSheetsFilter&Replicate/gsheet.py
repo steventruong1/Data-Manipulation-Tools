@@ -50,18 +50,19 @@ def charstoString(array,time1,temp) :
     new = ""
     counter = 0
     global wks
-    while counter <= gameLength - 1: #way for us to split the array. takes csgo, valorant and turns it into csgo which will check the sheet if we have page for it, create it if we don't and copy user data to it. repeat for valorant,etc
-        new = ""
-        for x in array[counter:gameLength]: # char by char for comma, breaks when found. otherwise add char to string
-            if x == ',' :
-                 counter += 1 
-                 break
-            else:
-                counter += 1 
-                new += x
-        counter +=1 #skips the space after the comma
-        wks =sh[dictHelper(new)] #look up index of game sheet in dictionary and returns said index. if not found, will add to dictionary and update index
-        wks.update_row(dictHelper1(new),b,0) #copy the data into the next empty row
+    #while counter <= gameLength - 1: #way for us to split the array. takes csgo, valorant and turns it into csgo which will check the sheet if we have page for it, create it if we don't and copy user data to it. repeat for valorant,etc
+        #new = ""
+       # for x in array[counter:gameLength]: # char by char for comma, breaks when found. otherwise add char to string
+            #if x == ',' :
+             #    counter += 1 
+             #    break
+           # else:
+           #     counter += 1 
+               # new += x
+        #counter +=1 #skips the space after the comma
+    for i in (''.join(array)).split(', '):     
+        wks =sh[dictHelper(i)] #look up index of game sheet in dictionary and returns said index. if not found, will add to dictionary and update index
+        wks.update_row(dictHelper1(i),b,0) #copy the data into the next empty row
         wks =sh[0] #while loop cycles back and we reset everything
 
 hdict =	{}
@@ -83,7 +84,7 @@ start_time = time.time() #starts timer to see how long program goes
 print("starting")
 
 while (placeholder != returnCellValue(userIndex,1)):
-    #print(superCounter) # DEBUG Print
+    #print("User #" + superCounter) # DEBUG Print
     b = returnRow(userIndex) #contains all user data ie timestamp to last one
     gameList = (b[filterIndex]) #takes the games portion of user data
     charstoString(gameList,time1,temp) #main driver of program
