@@ -91,7 +91,7 @@ while (placeholder != returnCellValue(userIndex,1)):
     superCounter+=1 
 print(superCounter) # DEBUG Print
 
-print("\nMy program took", time.time() - start_time, "to run\n") # time end
+print("\nIt took", time.time() - start_time, "to filter and replicate the data\n") # time end
 for key, value in hdict.items(): # print out dictionary of page index and last empty row
     print(key, ' : ', value)
 print("Number of users added " + str(superCounter))
